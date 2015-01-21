@@ -17,6 +17,7 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
   
   def new
@@ -26,6 +27,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)    # Not the final implementation!
     if @user.save
+          @user.send_activation_email
     	      flash[:success] = "Welcome to the Sample App!"
             redirect_to @user
 # Handle a successful save.
